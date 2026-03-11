@@ -43,6 +43,9 @@ keys[e.key.toLowerCase()]=true
 
 if(!gameStart && e.key===" "){
 gameStart=true
+music.currentTime = 0
+music.play()
+}
 }
 
 if(gameOver && e.key===" "){
@@ -94,6 +97,8 @@ const enemyLeft=img("fiende1-left-icon.png")
 
 const crowd=new Audio("assets/crowd-20-seconds.mp3")
 const crowdShort=new Audio("assets/crowd-brøl.mp3")
+const music=new Audio("assets/Game-music.mp3")
+music.loop=true
 
 function ellipse(){
 
@@ -343,18 +348,29 @@ return dist(a,b)<=a.r+b.r
 
 function enemyEnemyCollision(e1,e2){
 
-if(!collide(e1,e2))return
+if(!collide(e1,e2)) return
 
 let dx=e1.x-e2.x
 let dy=e1.y-e2.y
 
 let d=Math.sqrt(dx*dx+dy*dy)
 
-if(d===0)return
+if(d===0) return
+
+// overlap
+let overlap=(e1.r+e2.r)-d
 
 let nx=dx/d
 let ny=dy/d
 
+// separer fiendene
+e1.x+=nx*overlap/2
+e1.y+=ny*overlap/2
+
+e2.x-=nx*overlap/2
+e2.y-=ny*overlap/2
+
+// velocity collision
 let v1=e1.fx*nx+e1.fy*ny
 let v2=e2.fx*nx+e2.fy*ny
 
@@ -485,4 +501,5 @@ requestAnimationFrame(loop)
 }
 
 loop()
+
 
