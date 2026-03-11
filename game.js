@@ -37,15 +37,18 @@ let MAX_SPEED=5
 
 const keys={}
 
+let leaderboard=[]
+let scoreSubmitted=false
+
 document.addEventListener("keydown",e=>{
 
 keys[e.key.toLowerCase()]=true
 
 if(!gameStart && e.key===" "){
 gameStart=true
-music.currentTime = 0
-music.play()
-}
+music.volume=0.5
+music.currentTime=0
+music.play().catch(()=>{})
 }
 
 if(gameOver && e.key===" "){
@@ -66,6 +69,7 @@ goldEvent=false
 
 gameOver=false
 gameStart=true
+scoreSubmitted=false
 
 enemies=[]
 collectibles=[]
@@ -198,8 +202,6 @@ constructor(x,y,fx,fy,r){
 
 super(x,y,fx,fy,r)
 
-this.dead=false
-
 }
 
 update(){
@@ -273,45 +275,36 @@ let collectibles=[]
 function spawnEnemy(){
 
 let r=Math.random()*15+15
-
 let corner=Math.floor(Math.random()*4)
 
 let x,y,fx,fy
 
 if(corner===0){
-
 x=r+200
 y=r+100
 fx=Math.random()
 fy=Math.random()
-
 }
 
 else if(corner===1){
-
 x=W-(r+200)
 y=r+100
 fx=-Math.random()
 fy=Math.random()
-
 }
 
 else if(corner===2){
-
 x=r+200
 y=H-(r+100)
 fx=Math.random()
 fy=-Math.random()
-
 }
 
 else{
-
 x=W-(r+200)
 y=H-(r+100)
 fx=-Math.random()
 fy=-Math.random()
-
 }
 
 enemies.push(new Enemy(x,y,fx,fy,r))
@@ -354,23 +347,19 @@ let dx=e1.x-e2.x
 let dy=e1.y-e2.y
 
 let d=Math.sqrt(dx*dx+dy*dy)
-
 if(d===0) return
 
-// overlap
 let overlap=(e1.r+e2.r)-d
 
 let nx=dx/d
 let ny=dy/d
 
-// separer fiendene
 e1.x+=nx*overlap/2
 e1.y+=ny*overlap/2
 
 e2.x-=nx*overlap/2
 e2.y-=ny*overlap/2
 
-// velocity collision
 let v1=e1.fx*nx+e1.fy*ny
 let v2=e2.fx*nx+e2.fy*ny
 
@@ -388,6 +377,25 @@ e2.fy+=(nv2-v2)*ny
 
 }
 
+function submitScore(){
+
+if(scoreSubmitted) return
+
+let name=prompt("Enter your name for leaderboard:")
+
+if(!name) name="Player"
+
+const scoresRef = ref(db,"scores")
+
+push(scoresRef,{
+name:name,
+score:points
+})
+
+scoreSubmitted=true
+
+}
+
 function update(){
 
 if(!gameStart)return
@@ -401,7 +409,7 @@ if(collide(player,c)){
 
 points++
 
-let isGold = (points % goldscore === 0)
+let isGold=(points % goldscore === 0)
 
 if(isGold){
 
@@ -419,7 +427,6 @@ crowd.play()
 }
 
 collectibles.splice(collectibles.indexOf(c),1)
-
 spawnCollectible()
 
 }
@@ -429,23 +436,16 @@ spawnCollectible()
 enemies.forEach(e=>e.update())
 
 for(let i=0;i<enemies.length;i++){
-
 for(let j=i+1;j<enemies.length;j++){
-
 enemyEnemyCollision(enemies[i],enemies[j])
-
 }
-
 }
 
 enemies.forEach(e=>{
-
 if(collide(player,e) && !goldEvent){
-
 gameOver=true
-
+submitScore()
 }
-
 })
 
 }
@@ -481,7 +481,6 @@ return
 player.draw()
 
 collectibles.forEach(c=>c.draw())
-
 enemies.forEach(e=>e.draw())
 
 ctx.fillStyle="white"
@@ -501,5 +500,3 @@ requestAnimationFrame(loop)
 }
 
 loop()
-
-
