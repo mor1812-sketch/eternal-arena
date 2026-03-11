@@ -1,11 +1,32 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+<meta charset="UTF-8">
+<title>Eternal Arena</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
 body{
-    margin:0;
-    background:black;
-    overflow:hidden;
-    font-family:Impact, sans-serif;
-    }
-    
-    canvas{
-    display:block;
-    margin:auto;
-    }
+margin:0;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+}
+</style>
+
+</head>
+
+<body>
+
+<canvas id="game"></canvas>
+
+<script src="game.js"></script>
+
+</body>
+
+</html>
