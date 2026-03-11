@@ -72,30 +72,22 @@ const music=new Audio("assets/Game-music.mp3")
 music.loop=true
 
 function ellipse(){
-
 return{
-
 cx:(W/20)+(W*0.9)/2,
 cy:-(H/50)+H/2,
 rx:(W*0.9)/2,
 ry:H/2
-
 }
-
 }
 
 class ObjectBase{
-
 constructor(x,y,fx,fy,r){
-
 this.x=x
 this.y=y
 this.fx=fx
 this.fy=fy
 this.r=r
-
 }
-
 }
 
 class Player extends ObjectBase{
@@ -117,7 +109,6 @@ this.moveEllipse()
 
 this.x+=this.fx
 this.y+=this.fy
-
 }
 
 moveEllipse(){
@@ -143,9 +134,7 @@ this.fy-=vn*ny
 
 this.x=cx+rx*nx
 this.y=cy+ry*ny
-
 }
-
 }
 
 draw(){
@@ -158,18 +147,14 @@ ctx.arc(this.x,this.y,this.r+8,0,Math.PI*2)
 ctx.fill()
 
 ctx.drawImage(img,this.x-27,this.y-27,55,55)
-
 }
-
 }
 
 class Enemy extends ObjectBase{
 
 constructor(x,y,fx,fy,r){
-
 super(x,y,fx,fy,r)
 this.dead=false
-
 }
 
 update(){
@@ -189,17 +174,13 @@ let ny=dy/len
 let vn=this.fx*nx+this.fy*ny
 
 if(vn>0){
-
 this.fx-=2*vn*nx
 this.fy-=2*vn*ny
-
 }
-
 }
 
 this.x+=this.fx*(level-((level-1)/2))
 this.y+=this.fy*(level-((level-1)/2))
-
 }
 
 draw(){
@@ -212,9 +193,7 @@ ctx.arc(this.x,this.y,this.r+6,0,Math.PI*2)
 ctx.fill()
 
 ctx.drawImage(img,this.x-this.r,this.y-this.r,this.r*2,this.r*2)
-
 }
-
 }
 
 class Collectible extends ObjectBase{
@@ -230,9 +209,7 @@ ctx.arc(this.x,this.y,this.r,0,Math.PI*2)
 ctx.stroke()
 
 ctx.drawImage(f,this.x-7,this.y-47,50,50)
-
 }
-
 }
 
 const player=new Player(W/2,H*0.7,0,0,20)
@@ -242,6 +219,8 @@ let collectibles=[]
 
 function spawnEnemy(){
 
+if(goldEvent) return
+
 let r=Math.random()*15+15
 
 let corner=Math.floor(Math.random()*4)
@@ -249,43 +228,31 @@ let corner=Math.floor(Math.random()*4)
 let x,y,fx,fy
 
 if(corner===0){
-
 x=r+200
 y=r+100
 fx=Math.random()
 fy=Math.random()
-
 }
-
 else if(corner===1){
-
 x=W-(r+200)
 y=r+100
 fx=-Math.random()
 fy=Math.random()
-
 }
-
 else if(corner===2){
-
 x=r+200
 y=H-(r+100)
 fx=Math.random()
 fy=-Math.random()
-
 }
-
 else{
-
 x=W-(r+200)
 y=H-(r+100)
 fx=-Math.random()
 fy=-Math.random()
-
 }
 
 enemies.push(new Enemy(x,y,fx,fy,r))
-
 }
 
 function spawnCollectible(){
@@ -296,41 +263,39 @@ let x=W*0.3+Math.random()*W*0.3
 let y=H*0.2+Math.random()*H*0.6
 
 collectibles.push(new Collectible(x,y,0,0,r))
-
 }
 
 spawnCollectible()
 
 function dist(a,b){
-
 let dx=a.x-b.x
 let dy=a.y-b.y
-
 return Math.sqrt(dx*dx+dy*dy)
-
 }
 
 function collide(a,b){
-
 return dist(a,b)<=a.r+b.r
-
 }
 
 function enemyEnemyCollision(e1,e2){
 
-if(!collide(e1,e2))return
-
-sword.play()
+if(!collide(e1,e2)) return
 
 let dx=e1.x-e2.x
 let dy=e1.y-e2.y
 
 let d=Math.sqrt(dx*dx+dy*dy)
+if(d===0) return
 
-if(d===0)return
+let overlap=(e1.r+e2.r)-d
 
 let nx=dx/d
 let ny=dy/d
+
+e1.x+=nx*overlap/2
+e1.y+=ny*overlap/2
+e2.x-=nx*overlap/2
+e2.y-=ny*overlap/2
 
 let v1=e1.fx*nx+e1.fy*ny
 let v2=e2.fx*nx+e2.fy*ny
@@ -347,6 +312,8 @@ e1.fy+=(nv1-v1)*ny
 e2.fx+=(nv2-v2)*nx
 e2.fy+=(nv2-v2)*ny
 
+sword.currentTime=0
+sword.play()
 }
 
 function update(){
@@ -365,10 +332,12 @@ if((points+1)%goldscore===0){
 
 goldEvent=true
 level++
+enemies=[]
 crowdShort.play()
 
 }else{
 
+goldEvent=false
 spawnEnemy()
 crowd.play()
 
@@ -376,33 +345,22 @@ crowd.play()
 
 collectibles.splice(collectibles.indexOf(c),1)
 spawnCollectible()
-
 }
-
 })
 
 enemies.forEach(e=>e.update())
 
 for(let i=0;i<enemies.length;i++){
-
 for(let j=i+1;j<enemies.length;j++){
-
 enemyEnemyCollision(enemies[i],enemies[j])
-
 }
-
 }
 
 enemies.forEach(e=>{
-
 if(collide(player,e) && !goldEvent){
-
 gameOver=true
-
 }
-
 })
-
 }
 
 function draw(){
@@ -440,16 +398,12 @@ ctx.fillStyle="white"
 ctx.font="40px Impact"
 ctx.fillText("Score: "+points,40,50)
 ctx.fillText("Level "+level,W-200,50)
-
 }
 
 function loop(){
-
 update()
 draw()
-
 requestAnimationFrame(loop)
-
 }
 
 loop()
