@@ -1,32 +1,25 @@
-<!DOCTYPE html>
-<html lang="no">
+<div id="leaderboard">
+<h2>GLOBAL LEADERBOARD</h2>
+<div id="scores"></div>
+</div>
 
-<head>
-<meta charset="UTF-8">
-<title>Eternal Arena</title>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
 
-<link rel="stylesheet" href="style.css">
+<script>
 
-<style>
-body{
-margin:0;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-overflow:hidden;
-}
-</style>
+const firebaseConfig = {
+apiKey: "PASTE_KEY_HERE",
+authDomain: "eternal-arena.firebaseapp.com",
+databaseURL: "https://eternal-arena-default-rtdb.firebaseio.com",
+projectId: "eternal-arena",
+storageBucket: "eternal-arena.appspot.com",
+messagingSenderId: "000000000",
+appId: "000000000"
+};
 
-</head>
+firebase.initializeApp(firebaseConfig);
 
-<body>
-
-<canvas id="game"></canvas>
+</script>
 
 <script src="game.js"></script>
-
-</body>
-
-</html>
