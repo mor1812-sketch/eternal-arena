@@ -579,9 +579,14 @@ ctx.fillText("Level "+level,W-200,50)
 
 }
 
-function loop(){
+let lastTime = 0
 
-update()
+function loop(time){
+
+let delta = (time - lastTime) / 16.67
+lastTime = time
+
+update(delta)
 draw()
 
 requestAnimationFrame(loop)
@@ -589,6 +594,7 @@ requestAnimationFrame(loop)
 }
 
 loop()
+
 
 
 
