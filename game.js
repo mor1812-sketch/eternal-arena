@@ -413,6 +413,32 @@ scoreSubmitted=true
 
 }
 
+function drawLeaderboard(){
+
+const board=document.getElementById("leaderboard")
+
+if(!board) return
+
+let html="<h2>Leaderboard</h2>"
+
+leaderboard
+.sort((a,b)=>b.score-a.score)
+.slice(0,10)
+.forEach((s,i)=>{
+
+let cls=i<3?"scoreEntry top3":"scoreEntry"
+
+html+=`<div class="${cls}">
+<span>${i+1}. ${s.name}</span>
+<span>${s.score}</span>
+</div>`
+
+})
+
+board.innerHTML=html
+
+}
+
 function update(){
 
 if(!gameStart)return
@@ -471,6 +497,8 @@ function draw(){
 
 ctx.drawImage(bg,0,0,W,H)
 
+drawLeaderboard()
+
 if(!gameStart){
 
 ctx.drawImage(titleImg,W/2-300,H/2-150,600,300)
@@ -517,6 +545,7 @@ requestAnimationFrame(loop)
 }
 
 loop()
+
 
 
 
