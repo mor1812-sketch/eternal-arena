@@ -441,9 +441,7 @@ board.innerHTML=html
 
 /* FIREBASE LISTENER (FLYTTET HIT) */
 
-try{
-
-if(window.db){
+function startLeaderboard(){
 
 const scoresRef = window.ref(window.db,"scores")
 
@@ -578,3 +576,4 @@ requestAnimationFrame(loop)
 }
 
 loop()
+
