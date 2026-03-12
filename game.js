@@ -135,7 +135,7 @@ this.r=r
 
 class Player extends ObjectBase{
 
-update(){
+update(delta){
 
 if(keys["w"]||keys["arrowup"])this.fy-=ACC
 if(keys["s"]||keys["arrowdown"])this.fy+=ACC
@@ -150,8 +150,8 @@ this.fy*=FRICTION
 
 this.moveEllipse()
 
-this.x+=this.fx
-this.y+=this.fy
+this.x+=this.fx * delta
+this.y+=this.fy * delta
 
 }
 
@@ -206,7 +206,7 @@ super(x,y,fx,fy,r)
 
 }
 
-update(){
+update(delta){
 
 const {cx,cy,rx,ry}=ellipse()
 
@@ -231,8 +231,8 @@ this.fy-=2*vn*ny
 
 }
 
-this.x+=this.fx*(level-((level-1)/2))
-this.y+=this.fy*(level-((level-1)/2))
+this.x+=this.fx*(level-((level-1)/2)) * delta
+this.y+=this.fy*(level-((level-1)/2)) * delta
 
 }
 
@@ -485,12 +485,12 @@ setTimeout(waitForFirebase,100)
 
 waitForFirebase()
 
-function update(){
+function update(delta){
 
 if(!gameStart)return
 if(gameOver)return
 
-player.update()
+player.update(delta)
 
 collectibles.forEach(c=>{
 
@@ -522,7 +522,7 @@ spawnCollectible()
 
 })
 
-enemies.forEach(e=>e.update())
+enemies.forEach(e=>e.update(delta))
 
 for(let i=0;i<enemies.length;i++){
 for(let j=i+1;j<enemies.length;j++){
@@ -593,7 +593,8 @@ requestAnimationFrame(loop)
 
 }
 
-loop()
+requestAnimationFrame(loop)
+
 
 
 
