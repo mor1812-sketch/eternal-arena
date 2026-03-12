@@ -386,7 +386,8 @@ if(scoreSubmitted) return
 let name = prompt("Enter your name for leaderboard:")
 
 if(!name || name.trim()===""){
-name="Player"
+scoreSubmitted = true
+return
 }
 
 try{
@@ -586,6 +587,7 @@ requestAnimationFrame(loop)
 }
 
 loop()
+
 
 
 
