@@ -39,6 +39,7 @@ const keys={}
 
 let leaderboard=[]
 let scoreSubmitted=false
+
 // REALTIME LEADERBOARD
 try{
 
@@ -48,13 +49,17 @@ const scoresRef = window.ref(window.db,"scores")
 
 window.onValue(scoresRef,(snapshot)=>{
 
-let data=snapshot.val()
+const data = snapshot.val()
 
 leaderboard=[]
+
+if(!data) return
 
 for(let id in data){
 leaderboard.push(data[id])
 }
+
+drawLeaderboard() // oppdater visning direkte
 
 })
 
@@ -569,6 +574,7 @@ requestAnimationFrame(loop)
 }
 
 loop()
+
 
 
 
