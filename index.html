@@ -20,7 +20,16 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js"
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js"
-import { firebaseConfig } from "./firebase-config.js"
+
+const firebaseConfig = {
+apiKey: "AIzaSyBy_s9IftzxfYh6dFgkxDGZNUGzo0ZTjB0",
+authDomain: "eternal-arena-92158.firebaseapp.com",
+databaseURL: "https://eternal-arena-92158-default-rtdb.europe-west1.firebasedatabase.app",
+projectId: "eternal-arena-92158",
+storageBucket: "eternal-arena-92158.firebasestorage.app",
+messagingSenderId: "410947992246",
+appId: "1:410947992246:web:635f4acae2798d03e3c417"
+}
 
 const app = initializeApp(firebaseConfig)
 
