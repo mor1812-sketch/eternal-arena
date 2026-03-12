@@ -443,6 +443,10 @@ board.innerHTML=html
 
 function startLeaderboard(){
 
+if(!window.db || !window.ref || !window.onValue){
+return
+}
+
 const scoresRef = window.ref(window.db,"scores")
 
 window.onValue(scoresRef,(snapshot)=>{
@@ -468,7 +472,7 @@ drawLeaderboard()
 
 function waitForFirebase(){
 
-if(window.db){
+if(window.db && window.ref && window.onValue){
 startLeaderboard()
 }else{
 setTimeout(waitForFirebase,100)
@@ -584,5 +588,6 @@ requestAnimationFrame(loop)
 }
 
 loop()
+
 
 
