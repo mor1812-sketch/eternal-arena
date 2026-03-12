@@ -44,9 +44,9 @@ try{
 
 if(window.db){
 
-const scoresRef = ref(db,"scores")
+const scoresRef = window.ref(window.db,"scores")
 
-onValue(scoresRef,(snapshot)=>{
+window.onValue(scoresRef,(snapshot)=>{
 
 let data=snapshot.val()
 
@@ -417,9 +417,9 @@ try{
 
 if(window.db){
 
-const scoresRef = ref(db,"scores")
+const scoresRef = window.ref(window.db,"scores")
 
-push(scoresRef,{
+window.push(scoresRef,{
 name:name,
 score:points,
 time:Date.now()
@@ -569,6 +569,7 @@ requestAnimationFrame(loop)
 }
 
 loop()
+
 
 
 
