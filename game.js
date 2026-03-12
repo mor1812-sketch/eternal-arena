@@ -466,9 +466,17 @@ drawLeaderboard()
 
 }
 
-}catch(err){
-console.log("Leaderboard load error:",err)
+function waitForFirebase(){
+
+if(window.db){
+startLeaderboard()
+}else{
+setTimeout(waitForFirebase,100)
 }
+
+}
+
+waitForFirebase()
 
 function update(){
 
@@ -576,4 +584,5 @@ requestAnimationFrame(loop)
 }
 
 loop()
+
 
