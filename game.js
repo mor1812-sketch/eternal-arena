@@ -595,17 +595,20 @@ ctx.fillText("Level "+level,W-200,50)
 
 }
 
+
 let lastTime = 0
 
 function loop(time){
 
 let delta = (time - lastTime) / 16.67
-lastTime = time
 
 if(delta > 3){
+lastTime = time   // reset her
 requestAnimationFrame(loop)
 return
 }
+
+lastTime = time
 
 update(delta)
 draw()
