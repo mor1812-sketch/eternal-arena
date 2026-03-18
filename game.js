@@ -27,6 +27,7 @@ let gameOver=false
 let points=0
 let level=1
 let goldscore=40
+let lastSubmit = 0
 
 let goldEvent=false
 
@@ -381,6 +382,21 @@ e2.fy+=(nv2-v2)*ny
 
 function submitScore(){
 
+if(points > 500 && level < 3){
+  console.log("Sus score blocked")
+  return
+}
+
+if(points > 500){
+  console.log("Sus score blocked")
+  return
+}
+
+if(Date.now() - lastSubmit < 3000) return
+lastSubmit = Date.now()
+
+if(points < 0 || points > 10000) return
+  
 if(scoreSubmitted) return
 
 let name = prompt("Enter your name for leaderboard:")
