@@ -602,6 +602,8 @@ function loop(time){
 let delta = (time - lastTime) / 16.67
 lastTime = time
 
+if(delta > 3) delta = 3
+
 update(delta)
 draw()
 
