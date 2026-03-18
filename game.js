@@ -28,6 +28,7 @@ let points=0
 let level=1
 let goldscore=40
 let lastSubmit = 0
+let startTime = 0
 
 let goldEvent=false
 
@@ -47,6 +48,9 @@ keys[e.key.toLowerCase()]=true
 
 if(!gameStart && e.key===" "){
 gameStart=true
+
+startTime = Date.now()
+
 music.volume=0.5
 music.currentTime=0
 music.play().catch(()=>{})
@@ -69,6 +73,7 @@ keys[k]=false
 points=0
 level=1
 goldEvent=false
+startTime = Date.now()
 
 gameOver=false
 gameStart=true
@@ -382,10 +387,9 @@ e2.fy+=(nv2-v2)*ny
 
 function submitScore(){
 
-if(points > 500 && level < 3){
-  console.log("Sus score blocked")
-  return
-}
+let timePlayed = Date.now() - startTime
+
+if(timePlayed < 1000) return
 
 if(points > 500){
   console.log("Sus score blocked")
@@ -396,6 +400,11 @@ if(Date.now() - lastSubmit < 3000) return
 lastSubmit = Date.now()
 
 if(points < 0 || points > 10000) return
+
+if(points / (timePlayed/1000) > 6){
+  console.log("Sus score blocked")
+  return
+}
   
 if(scoreSubmitted) return
 
@@ -415,9 +424,10 @@ if(window.db){
 const scoresRef = window.ref(window.db,"scores")
 
 window.push(scoresRef,{
-name:name,
-score:points,
-time:Date.now()
+name: name,
+score: points,
+timePlayed: timePlayed,
+time: Date.now()
 })
 
 }
