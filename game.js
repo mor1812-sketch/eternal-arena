@@ -588,6 +588,7 @@ ctx.drawImage(gameOverImg,W/2-250,H/2-120,500,240)
 ctx.fillStyle="white"
 ctx.font="30px Arial"
 ctx.fillText("Press SPACE to restart",W/2-140,H/2+180)
+ctx.fillText("Score: "+points,40,50)
 
 return
 
